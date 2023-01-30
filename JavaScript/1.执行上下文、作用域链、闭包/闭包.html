@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        /**
+         * 闭包：可以访问外部作用域的内部函数，即使这个外部作用域已经执行结束。
+                引用的变量直到闭包被销毁时才会销毁。
+         */
+        function outer(){
+            var num = 0;
+            return function add(){
+                num++
+                console.log(num);
+            }
+        }
+        var f1 = outer()
+        f1()
+        f1()
+        var f2 = outer()
+        f2()
+        f2()
+    </script>
+</body>
+</html>

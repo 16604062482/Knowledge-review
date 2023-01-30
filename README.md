@@ -13,3 +13,10 @@ Preview the gif below to get a quick demo of github.dev in action.
 
 # Why?
 It’s a quick way to edit and navigate code. It's especially useful if you want to edit multiple files at a time or take advantage of all the powerful code editing features of Visual Studio Code when making a quick change. For more information, see our [documentation](https://github.co/codespaces-editor-help).
+
+
+
+https://juejin.cn/post/6844904072345026574
+
+
+https://juejin.cn/post/6844904116339261447
