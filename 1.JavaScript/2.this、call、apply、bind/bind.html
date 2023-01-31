@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <!-- bind方法：进行this绑定。返回值是一个函数，函数中的this就是bind的参数对象。 -->
+    <script>
+        Function.prototype.myBind = function (content) {
+            let that = this
+            let args = [...arguments][1]
+            return function () {
+                return that.apply(content, args)
+            }
+        }
+        // 测试
+        var foo = {
+            value: 1
+        };
+        function bar(name, age) {
+            console.log(' name: ' + name + ' age: ' + age + ' value: ' + this.value)
+        }
+        let fn = bar.myBind(foo, ['kevin', 18]);
+        fn()
+    </script>
+
+    <!-- 不借助call、apply实现 -->
+    <script>
+        Function.prototype.myBind = function (content) {
+            content.fn = this
+            let args = [...arguments[1]]
+            return function () {
+                content.fn(...args);
+            };
+            delete content.fn;
+        };
+        function bar(name, age) {
+            console.log(' name: ' + name + ' age: ' + age + ' value: ' + this.value)
+        }
+        let fn2 = bar.myBind(foo, ['kevin', 18]);
+        fn2()
+    </script>
+</body>
+
+</html>

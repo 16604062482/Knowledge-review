@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!-- apply()方法接受的是一个包含多个参数的数组 -->
+    <script>
+        Function.prototype.myApply = function(content,array){
+            var content = content || window
+            content.fn = this
+            var result = content.fn(...array)
+            delete content.fn
+            return result
+        }
+
+        // 测试
+        var foo = {
+            value: 1
+        };
+        function bar(name, age) {
+            console.log(' name: ' + name + ' age: ' + age + ' value: ' + this.value)
+        }
+        bar.myApply(foo, ['kevin', 18]);
+    </script>
+</body>
+</html>

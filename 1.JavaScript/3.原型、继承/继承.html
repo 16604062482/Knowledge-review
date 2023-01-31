@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <!-- 原型链继承 -->
+    <script>
+        class Child {
+
+        }
+        class Parent {
+
+        }
+        Child.prototype = new Parent()
+    </script>
+    <!-- 构造函数继承 -->
+    <script>
+        class Child {
+            constructor() {
+                Parent.call(this)
+            }
+        }
+        class Parent {
+
+        }
+    </script>
+    <!-- 组合继承 -->
+    <script>
+        class Child {
+            constructor() {
+                Parent.call(this)
+            }
+        }
+        class Parent {
+
+        }
+        Child.prototype = new Parent()
+        Child.prototype.constructor = Child
+    </script>
+    <!-- 原型式继承 -->
+    <script>
+        let obj = {}
+        let obj1 = Object.create(obj)
+    </script>
+    <!-- 寄生式继承 -->
+    <script>
+        let obj2 = {}
+        let obj3 = create(obj)
+        function create(obj) {
+            return Object.create(obj)
+        }
+    </script>
+    <!--  -->
+    <script>
+        class Child {
+            constructor() {
+                Parent.call(this)
+            }
+        }
+        class Parent {
+
+        }
+        function create(obj) {
+            function fn() { }
+            fn.prototype = obj
+            return new fn()
+        }
+        Child.prototype = create(Parent.prototype)
+        Child.prototype.constructor = Child
+    </script>
+</body>
+
+</html>

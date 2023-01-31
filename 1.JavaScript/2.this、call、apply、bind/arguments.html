@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        // arguments转数组
+        function A() {
+            console.log(arguments);
+            console.log([...arguments]);
+            console.log(Array.prototype.slice.apply(arguments));
+            console.log(Array.prototype.slice.call(arguments));
+            
+            let args = []
+            for (var i = 0; i < arguments.length; i++) {
+                args.push(arguments[i]);
+            }
+            console.log(args);
+        }
+        A(1, 2, 3)
+    </script>
+</body>
+
+</html>
