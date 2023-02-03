@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <input type="file" id="input">
+    <button id="upload">上传</button>
+
+    <script>
+        let input = document.getElementById('input')
+        let upload = document.getElementById('upload')
+        let files = {}
+        let chunksList = []
+        // 读取文件
+        input.addEventListener('change', (e) => {
+            files = e.target.files[0] //单位字节(byte)
+            chunksList = createChunk(files)
+            console.log(chunksList);
+        })
+
+        // 1MB=1024KB 1KB=1024Byte
+        function createChunk(file, size = 2 * 1024 * 1024) { //2MB
+            const chunkList = []
+            let cur = 0
+            while (cur < file.size) {
+                chunkList.push({
+                    file: file.slice(cur, cur + size)
+                })
+                cur += size
+            }
+            return chunkList
+        }
+
+        // 文件上传
+        upload.addEventListener('click', () => {
+            const uploadList = chunksList.map(({ file }, index) => ({
+                file,
+                size: file.size,
+                chunkName: `${files.name}-${index}`,
+                fileName: files.name,
+                index
+            }))
+            //发请求，调用函数
+            uploadFile(uploadList)
+            // console.log(uploadList);
+        })
+
+        // 数据处理
+        async function uploadFile(list) {
+            const requestList = list.map(({ file, fileName, index, chunkName }) => {
+                const formData = new FormData()
+                formData.append('file', file)
+                formData.append('fileName', fileName)
+                formData.append('chunkName', chunkName)
+                return { formData, index }
+            })
+            // .map(({ formData, index }) =>
+            //     axiosRequest({
+            //         method: 'post',
+            //         url: 'http://localhost:3000/upload',//请求接口，要与后端一一一对应
+            //         data: formData
+            //     }).then(res => {
+            //         // 显示上传进度
+            //     })
+            // )
+            await Promise.all(requestList)//保证所有的切片都已经传输完毕
+        }
+
+        //请求函数
+        function axiosRequest({ method = "post", url, data }) {
+            return new Promise((resolve, reject) => {
+                const config = {//设置请求头
+                    headers: 'Content-Type:application/x-www-form-urlencoded',
+                }
+                //默认是post请求，可更改
+                axios[method](url, data, config).then((res) => {
+                    resolve(res)
+                })
+            })
+        }
+    </script>
+</body>
+
+</html>
