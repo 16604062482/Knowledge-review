@@ -84,7 +84,6 @@ class myPromise {
     return this.then(null, fn);
   }
 }
-
 function resolvePromise(promise2, x, resolve, reject) {
   if (x === promise2) {
     return reject(new TypeError("Chaining cycle detected for promise"));
@@ -119,16 +118,19 @@ function resolvePromise(promise2, x, resolve, reject) {
     resolve(x);
   }
 }
+//resolve方法
 myPromise.resolve = function (val) {
   return new myPromise((resolve, reject) => {
     resolve(val);
   });
 };
+//reject方法
 myPromise.reject = function (val) {
   return new myPromise((resolve, reject) => {
     reject(val);
   });
 };
+//race方法
 myPromise.race = function (promises) {
   return new myPromise((resolve, reject) => {
     for (let i = 0; i < promises.length; i++) {
@@ -136,6 +138,7 @@ myPromise.race = function (promises) {
     }
   });
 };
+//all方法(获取所有的promise，都执行then，把结果放到数组，一起返回)
 myPromise.all = function (promises) {
   let arr = [];
   let i = 0;
@@ -154,6 +157,7 @@ myPromise.all = function (promises) {
     }
   });
 };
+
 myPromise.deferred = function () {
   let result = {};
   result.promise = new myPromise((resolve, reject) => {
