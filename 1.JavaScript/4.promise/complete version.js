@@ -34,12 +34,12 @@ class myPromise {
         : (err) => {
             throw err;
           };
-    let promise2 = new myPromise((resolve, reject) => {
-      if (this.state === "fulfilled") {
+    let promise2 = new myPromise((resolve, reject) => { //因为promise的三种状态不可逆，所以不能用this代替
+      if (this.state === "fulfilled") { //onFulfilled 和 onRejected调用次数不能超过一次
         setTimeout(() => {
           try {
             let x = onFulfilled(this.value);
-            resolvePromise(promise2, x, resolve, reject);
+            resolvePromise(promise2, x, resolve, reject); //这里就是resolve(x),对x的类型进行判断
           } catch (e) {
             reject(e);
           }
@@ -85,19 +85,19 @@ class myPromise {
   }
 }
 function resolvePromise(promise2, x, resolve, reject) {
-  if (x === promise2) {
+  if (x === promise2) { //promsie不能循环调用
     return reject(new TypeError("Chaining cycle detected for promise"));
   }
   let called;
   if (x != null && (typeof x === "object" || typeof x === "function")) {
     try {
       let then = x.then;
-      if (typeof then === "function") {
-        then.call(
+      if (typeof then === "function") { //如果then是函数，x可能是promise对象，执行then。
+        then.call( // then是从x上获取的，需要将this指向x
           x,
           (y) => {
-            if (called) return;
-            called = true;
+            if (called) return; 
+            called = true; //如果resolvePromise和rejectPromise都被调用，或者被一个参数调用多次，则优先采用首次调用忽略剩下的调用
             resolvePromise(promise2, y, resolve, reject);
           },
           (err) => {
