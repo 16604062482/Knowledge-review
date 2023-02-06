@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+
+    var a = {
+      a1: 1,
+      a2: {
+        b1: 1,
+        b2: {
+          c1: 1
+        }
+      }
+    }
+    // 可以解决爆栈问题
+    function cloneLoop(x) {
+      let root = {}
+      let stack = [{
+        parent: {},
+        data: x,
+        key: undefined
+      }]
+      while (stack.length) {
+        let node = stack.pop()
+        let res = node.parent;
+        if (typeof key !== "undefined") {
+          res = parent[key] = {};
+        }
+        for (const key in node.data) {
+          if (node.hasOwnProperty(key)) {
+            if (typeof key == 'object') {
+              stack.push({
+                parent: res,
+                data: node.data[key],
+                key: key
+              })
+            } else {
+              res[key] = node.data[key]
+            }
+          }
+        }
+      }
+      return root
+    }
+
+    let b = cloneLoop(a)
+    b.a2.b1 = 2
+    console.log(a);
+    console.log(b);
+  </script>
+</body>
+
+</html>

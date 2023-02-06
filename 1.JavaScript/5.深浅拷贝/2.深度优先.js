@@ -24,7 +24,6 @@ var a = {
 // 可以解决爆栈问题
 function cloneLoop(x) {
   const root = {};
-
   // 栈
   const loopList = [
     {
@@ -33,7 +32,6 @@ function cloneLoop(x) {
       data: x,
     },
   ];
-
   while (loopList.length) {
     // 深度优先
     const node = loopList.pop();
