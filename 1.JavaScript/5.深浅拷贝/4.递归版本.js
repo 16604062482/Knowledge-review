@@ -23,7 +23,6 @@ function cloneDeep(source, hash = new WeakMap()) {
   if (hash.has(source)) return hash.get(source);
   let target = Array.isArray(source) ? [] : {};
   hash.set(source, target);
-  // ============= 新增代码
   let symKeys = Object.getOwnPropertySymbols(source); // 查找
   if (symKeys.length) {
     // 查找成功
@@ -54,7 +53,6 @@ function cloneDeep1(source, hash = new WeakMap()) {
   let target = Array.isArray(source) ? [] : {};
   hash.set(source, target);
   Reflect.ownKeys(source).forEach((key) => {
-    // 改动
     if (isObject(source[key])) {
       target[key] = cloneDeep4(source[key], hash);
     } else {

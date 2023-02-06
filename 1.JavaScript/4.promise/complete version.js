@@ -168,3 +168,5 @@ myPromise.deferred = function () {
 };
 
 module.exports = myPromise;
+
+// 终端命令：promises-aplus-tests 文件名.js
