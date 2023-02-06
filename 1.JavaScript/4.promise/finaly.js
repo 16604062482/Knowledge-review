@@ -1,4 +1,3 @@
-
 class myPromise {
   constructor(executor) {
     this.state = "pending";
@@ -32,7 +31,7 @@ class myPromise {
     }
     if (typeof onRejected !== "function") {
       onRejected = (err) => {
-        throw err
+        throw err;
       };
     }
     let promise2 = new myPromise((resolve, reject) => {
@@ -135,7 +134,7 @@ function resolvePromsie(promise2, x, resolve, reject) {
           (y) => {
             if (called) return;
             called = true;
-            resolvePromsie(promise2, y.resolve, reject);
+            resolvePromsie(promise2, y, resolve, reject);
           },
           (err) => {
             if (called) return;
