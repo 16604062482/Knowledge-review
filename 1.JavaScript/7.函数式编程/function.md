@@ -133,41 +133,41 @@ reduce： initValue--->callback--->callback--->callback
 * 偏函数：通过固定函数的一部分参数，生成一个参数数量更少的函数的过程。
 ```c
 // 定义高阶函数 curry
-function curry(addThreeNum) {
-  // 返回一个嵌套了三层的函数
-  return function addA(a) {
-    // 第一层“记住”参数a
-    return function addB(b) {
-      // 第二层“记住”参数b
-      return function addC(c) {
-        // 第三层直接调用现有函数 addThreeNum
-        return addThreeNum(a, b, c)
-      }
-    }
-  }
+function addThreeNum(a, b, c) {
+    return a + b + c
 }
-
-// 借助 curry 函数将 add
+function curry(addThreeNum) {
+    // 返回一个嵌套了三层的函数
+    return function addA(a) {
+        // 第一层“记住”参数a
+        return function addB(b) {
+            // 第二层“记住”参数b
+            return function addC(c) {
+                // 第三层直接调用现有函数 addThreeNum
+                return addThreeNum(a, b, c)
+            }
+        }
+    }
+}
 const curriedAddThreeNum = curry(addThreeNum)
-// 输出6，输出结果符合预期
-curriedAddThreeNum(1)(2)(3)
+console.log(curriedAddThreeNum(1)(2)(3));
 ```
 
 ```c
-// 定义偏函数
+function multiply(x, y) {
+    return x * y
+}
 function wrapFunc(func, fixedValue) {
-  // 包装函数的目标输出是一个新的函数
-  function wrappedFunc(input){
-    // 这个函数会固定 fixedValue，然后把 input 作为动态参数读取
-    const newFunc = func(input, fixedValue)
-    return newFunc
-  }
-  return wrappedFunc
+    // 包装函数的目标输出是一个新的函数
+    function wrappedFunc(input) {
+        // 这个函数会固定 fixedValue，然后把 input 作为动态参数读取
+        const newFunc = func(input, fixedValue)
+        return newFunc
+    }
+    return wrappedFunc
 }
 const multiply3 = wrapFunc(multiply, 3)
-
-// 输出6
-multiply3(2)
+console.log(multiply3(2)); //6
 ```
 - 实现通用柯里化函数
   > 我们简单拆解一下这个函数的任务：

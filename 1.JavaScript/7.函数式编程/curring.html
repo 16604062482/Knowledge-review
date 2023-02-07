@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        function addThreeNum(a, b, c) {
+            return a + b + c
+        }
+        function curry(addThreeNum) {
+            // 返回一个嵌套了三层的函数
+            return function addA(a) {
+                // 第一层“记住”参数a
+                return function addB(b) {
+                    // 第二层“记住”参数b
+                    return function addC(c) {
+                        // 第三层直接调用现有函数 addThreeNum
+                        return addThreeNum(a, b, c)
+                    }
+                }
+            }
+        }
+        const curriedAddThreeNum = curry(addThreeNum)
+        console.log(curriedAddThreeNum(1)(2)(3));
+    </script>
+</body>
+
+</html>
