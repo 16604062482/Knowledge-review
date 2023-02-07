@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        function curry1(func) {
+            function generateCurried(prevArgs) {
+                return function (nextArg) {
+                    const args = [...prevArgs, nextArg]
+                    if (args.length >= func.length) {
+                        return func(...args)
+                    } else {
+                        return generateCurried(args)
+                    }
+                }
+            }
+            return generateCurried([])
+        }
+        const curriedAddThreeNum = curry1(addThreeNum)
+        console.log(curriedAddThreeNum(1)(2)(3));
+
+        function addThreeNum(a, b, c) {
+            return a + b + c
+        }
+    </script>
+    <!-- 验证解决多元参数的case -->
+    <script>
+        function add(a, b) {
+            return a + b
+        }
+
+        function multiply(a, b, c) {
+            return a * b * c
+        }
+
+        function addMore(a, b, c, d) {
+            return a + b + c + d
+        }
+
+        function divide(a, b) {
+            return a / b
+        }
+        function curry(func) {
+            function generateCurried(prevArgs) {
+                return function (nextArg) {
+                    const args = [...prevArgs, nextArg]
+                    if (args.length >= func.length) {
+                        return func(...args)
+                    } else {
+                        return generateCurried(args)
+                    }
+                }
+            }
+            return generateCurried([])
+        }
+        function pipe(...funcs) {
+            function callback(input, fn) {
+                return fn(input)
+            }
+            return function (param) {
+                return funcs.reduce(callback, param)
+            }
+        }
+
+        const curriedAdd = curry(add)
+        const curriedMultiply = curry(multiply)
+        const curriedAddMore = curry(addMore)
+        const curriedDivide = curry(divide)
+        const compute = pipe(
+            curriedAdd(1),
+            curriedMultiply(2)(3),
+            curriedAddMore(1)(2)(3),
+            curriedDivide(300)
+        )
+        console.log(compute(3));
+    </script>
+</body>
+
+</html>

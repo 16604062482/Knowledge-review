@@ -173,17 +173,75 @@ console.log(fn(2));
   - 在嵌套的最后一层，调用回调函数，传入所有入参。
 
 ```c
-function curry(func, arity=func.length) {
-  function generateCurried(prevArgs) {
-    return function curried(nextArg) {
-      const args = [...prevArgs, nextArg]  
-      if(args.length >= arity) {
-        return func(...args)
-      } else {
-        return generateCurried(args)
-      }
+function curry(func) {
+    function generateCurried(prevArgs) {
+        return function (nextArg) { //每次调用，都传进来一个参数
+            const args = [...prevArgs, nextArg] //累计接受到的所有参数
+            if (args.length >= func.length) { //所有参数都已经获取完
+                return func(...args)
+            } else {
+                return generateCurried(args) //把当前所有累计参数，当作下一次的入参
+            }
+        }
     }
-  }
-  return generateCurried([])
+    return generateCurried([])
 }
+const fn = curry(addThreeNum)
+console.log(fn(1)(2)(3));
+
+function addThreeNum(a, b, c) {
+    return a + b + c
+}
+```
+- 柯里化解决组合链的元数问题：
+```c
+// 多个不同元的函数，通过pipe调用，形成声明式的数据流
+// 1.将多个不同元的函数，通过柯里化，做“一元化”处理
+// 2.将“一元化”的函数，传进pipe
+function add(a, b) {
+    return a + b
+}
+function multiply(a, b, c) {
+    return a * b * c
+}
+function addMore(a, b, c, d) {
+    return a + b + c + d
+}
+function divide(a, b) {
+    return a / b
+}
+
+function curry(func) {
+    function generateCurried(prevArgs) {
+        return function (nextArg) {
+            const args = [...prevArgs, nextArg]
+            if (args.length >= func.length) {
+                return func(...args)
+            } else {
+                return generateCurried(args)
+            }
+        }
+    }
+    return generateCurried([])
+}
+function pipe(...funcs) {
+    function callback(input, fn) {
+        return fn(input)
+    }
+    return function (param) {
+        return funcs.reduce(callback, param)
+    }
+}
+
+const curriedAdd = curry(add)
+const curriedMultiply = curry(multiply)
+const curriedAddMore = curry(addMore)
+const curriedDivide = curry(divide)
+const compute = pipe(
+    curriedAdd(1),
+    curriedMultiply(2)(3),
+    curriedAddMore(1)(2)(3),
+    curriedDivide(300)
+)
+console.log(compute(3));
 ```
