@@ -1,3 +1,7 @@
+
+
+* 函数式编程的核心则在于组合
+
 - 函数式编程 三个特征：
 
 * 使用纯函数，隔离副作用
@@ -36,6 +40,7 @@ function foo(num1,num2){ //纯函数
 ```
 
 - 一等公民 === 头等函数
+
   > 头等函数的核心特征是“可以被当做变量一样用”。
 
   - 可以被当作参数传递给其他函数
@@ -43,6 +48,153 @@ function foo(num1,num2){ //纯函数
   - 可以被赋值给一个变量
 
 - 不可变值：像数字类型这样，自创建起就无法再被修改的数据，我们称其为“不可变数据”。
-    - “值类型”数据均为不可变数据。
-    - 不可变数据の实践原则：拷贝，而不是修改
 
+  - “值类型”数据均为不可变数据。
+  - 不可变数据の实践原则：拷贝，而不是修改
+
+- DRY 原则---Don't Repeat Yourself（低耦合、高内聚）
+
+- reduce----一种 pipeline 函数
+
+  > reduce = 参数组合+函数 pipeline。
+
+- 声明式的数据流:
+
+  > 只需要观察一个函数调用链，这个调用链如同一条传送带一般，用函数名标注了每道工序的行为。
+  > 即便不清楚数据到底是如何在“传送带”上流转的，我们也能够通过函数名去理解程序的意图。
+  > 这样的代码，是声明式的。基于此构建出的数据流，就是声明式的数据流.
+
+- 命令式的数据流:
+  > 我有三行代码，我需要逐行阅读、理解计算中间态和主流程之间的逻辑关系，才能够推导出程序的意图。
+  > 这样的代码，是命令式的。
+
+* 实现声明式的数据流，除了借助链式调用，还可以借助函数组合。
+
+* 链式调用的前提:(如：map()、reduce()、filter())
+- 它们都挂载在 Array 原型的 Array.prototype 上
+- 它们在计算结束后都会 return 一个新的 Array
+- 既然 return 出来的也是 Array，那么自然可以继续访问原型 Array.prototype 上的方法
+
+* 链式调用的本质：
+  > 是通过在方法中返回对象实例本身的 this/ 与实例 this 相同类型的对象，达到多次调用其原型（链）上方法的目的。
+
+- compose/pipe 函数思路:
+> 把待组合的函数放进一个数组里，然后调用这个函数数组的 reduce 方法，就可以创建出多个函数组成的工作流。
+
+链式调用： input--->func1--->func2--->func3
+
+reduce： initValue--->callback--->callback--->callback
+                  ⬆️           ⬆️          ⬆️
+                func1        func2       func3
+
+        => callback(initValue, func1) = func1(input)
+        => callback(value1, func2) = func2(value1)
+
+  ```c
+  function callback(input, func) {
+    func(input)
+  }  
+
+  funcs.reduce(callback,0)
+  ```
+
+  ```c
+  function pipe(funcs) {
+    function callback(input, func) {
+      return func(input)
+    }  
+
+    return function(param) {
+      return funcs.reduce(callback,param)
+    }
+  }
+  ```
+
+
+  ```c
+  //正序是 pipe，倒序是 compose。
+  function compose(...funcs) {
+    function callback(input, func) {
+      return func(input)
+    }  
+
+    return function(param) {
+      return funcs.reduceRight(callback,param)
+    }
+  }
+  ```
+
+* 偏函数和柯里化解决的最核心的问题：
+- 函数组合链中的多元参数问题
+- 函数逻辑复用的问题
+* 柯里化：把 1 个 n 元函数改造为 n 个相互嵌套的一元函数的过程
+ > fn(a, b, c) -> fn(a)(b)(c)
+
+* 偏函数：通过固定函数的一部分参数，生成一个参数数量更少的函数的过程。
+```c
+// 定义高阶函数 curry
+function curry(addThreeNum) {
+  // 返回一个嵌套了三层的函数
+  return function addA(a) {
+    // 第一层“记住”参数a
+    return function addB(b) {
+      // 第二层“记住”参数b
+      return function addC(c) {
+        // 第三层直接调用现有函数 addThreeNum
+        return addThreeNum(a, b, c)
+      }
+    }
+  }
+}
+
+// 借助 curry 函数将 add
+const curriedAddThreeNum = curry(addThreeNum)
+// 输出6，输出结果符合预期
+curriedAddThreeNum(1)(2)(3)
+```
+
+```c
+// 定义偏函数
+function wrapFunc(func, fixedValue) {
+  // 包装函数的目标输出是一个新的函数
+  function wrappedFunc(input){
+    // 这个函数会固定 fixedValue，然后把 input 作为动态参数读取
+    const newFunc = func(input, fixedValue)
+    return newFunc
+  }
+  return wrappedFunc
+}
+const multiply3 = wrapFunc(multiply, 3)
+
+// 输出6
+multiply3(2)
+```
+- 实现通用柯里化函数
+  > 我们简单拆解一下这个函数的任务：
+  - 获取函数参数的数量
+  - 自动分层嵌套函数：有多少参数，就有多少层嵌套
+  - 在嵌套的最后一层，调用回调函数，传入所有入参。
+
+```c
+// curry 函数借助 Function.length 读取函数元数
+function curry(func, arity=func.length) {
+  // 定义一个递归式 generateCurried
+  function generateCurried(prevArgs) {
+    // generateCurried 函数必定返回一层嵌套
+    return function curried(nextArg) {
+      // 统计目前“已记忆”+“未记忆”的参数
+      const args = [...prevArgs, nextArg]  
+      // 若 “已记忆”+“未记忆”的参数数量 >= 回调函数元数，则认为已经记忆了所有的参数
+      if(args.length >= arity) {
+        // 触碰递归边界，传入所有参数，调用回调函数
+        return func(...args)
+      } else {
+        // 未触碰递归边界，则递归调用 generateCurried 自身，创造新一层的嵌套
+        return generateCurried(args)
+      }
+    }
+  }
+  // 调用 generateCurried，起始传参为空数组，表示“目前还没有记住任何参数”
+  return generateCurried([])
+}
+```
