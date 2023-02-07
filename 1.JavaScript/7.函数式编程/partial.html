@@ -10,20 +10,18 @@
 
 <body>
     <script>
-        function multiply(x, y) {
-            return x * y
+        function add(x, y) {
+            return x + y
         }
-        function wrapFunc(func, fixedValue) {
+        function partial(func, fixedValue) {
             // 包装函数的目标输出是一个新的函数
-            function wrappedFunc(input) {
+            return function wrapper(input) {
                 // 这个函数会固定 fixedValue，然后把 input 作为动态参数读取
-                const newFunc = func(input, fixedValue)
-                return newFunc
+                return func(input, fixedValue)
             }
-            return wrappedFunc
         }
-        const multiply3 = wrapFunc(multiply, 3)
-        console.log(multiply3(2));
+        const fn = partial(add, 3)
+        console.log(fn(2));
     </script>
 </body>
 

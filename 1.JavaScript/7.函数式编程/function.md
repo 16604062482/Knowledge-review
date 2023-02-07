@@ -154,20 +154,17 @@ console.log(curriedAddThreeNum(1)(2)(3));
 ```
 
 ```c
-function multiply(x, y) {
-    return x * y
+function add(x, y) {
+    return x + y
 }
-function wrapFunc(func, fixedValue) {
-    // 包装函数的目标输出是一个新的函数
-    function wrappedFunc(input) {
+function partial(func, fixedValue) {
+    return function wrapper(input) {// 包装函数
         // 这个函数会固定 fixedValue，然后把 input 作为动态参数读取
-        const newFunc = func(input, fixedValue)
-        return newFunc
+        return func(input, fixedValue)
     }
-    return wrappedFunc
 }
-const multiply3 = wrapFunc(multiply, 3)
-console.log(multiply3(2)); //6
+const fn = partial(add, 3)
+console.log(fn(2));
 ```
 - 实现通用柯里化函数
   > 我们简单拆解一下这个函数的任务：
@@ -176,25 +173,17 @@ console.log(multiply3(2)); //6
   - 在嵌套的最后一层，调用回调函数，传入所有入参。
 
 ```c
-// curry 函数借助 Function.length 读取函数元数
 function curry(func, arity=func.length) {
-  // 定义一个递归式 generateCurried
   function generateCurried(prevArgs) {
-    // generateCurried 函数必定返回一层嵌套
     return function curried(nextArg) {
-      // 统计目前“已记忆”+“未记忆”的参数
       const args = [...prevArgs, nextArg]  
-      // 若 “已记忆”+“未记忆”的参数数量 >= 回调函数元数，则认为已经记忆了所有的参数
       if(args.length >= arity) {
-        // 触碰递归边界，传入所有参数，调用回调函数
         return func(...args)
       } else {
-        // 未触碰递归边界，则递归调用 generateCurried 自身，创造新一层的嵌套
         return generateCurried(args)
       }
     }
   }
-  // 调用 generateCurried，起始传参为空数组，表示“目前还没有记住任何参数”
   return generateCurried([])
 }
 ```
