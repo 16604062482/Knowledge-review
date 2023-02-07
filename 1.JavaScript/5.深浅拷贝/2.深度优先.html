@@ -35,17 +35,17 @@
         const node = loopList.pop();
         const { key, data } = node
         if (typeof key !== "undefined") {
-          res[key] = {}
-          res = res[key]
+          res[key] = {} //object类型的，先创建一个空object
+          res = res[key] // 往这个空对象里赋值
         }
-        for (let k in data) {
-          if (typeof data[k] === "object") {
+        for (let item in data) {
+          if (typeof data[item] === "object") {
             loopList.push({
-              key: k,
-              data: data[k],
+              key: item,
+              data: data[item],
             });
           } else {
-            res[k] = data[k];
+            res[item] = data[item];
           }
         }
       }

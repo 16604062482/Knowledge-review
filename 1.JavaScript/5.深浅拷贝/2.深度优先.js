@@ -9,18 +9,6 @@ var a = {
     }
 }
 
-/**   
-    a
-  /   \
- a1   a2        
- |    / \         
- 1   b1 b2     
-     |   |        
-     1  c1
-         |
-         1  
- */
-
 // 可以解决爆栈问题
 function cloneLoop(x) {
   const root = {};

@@ -1,10 +1,11 @@
 var b = {};
 var a = { a1: b, a2: b };
-a.a1 === a.a2; // true
-var c = clone(a);
-c.a1 === c.a2; // false
+console.log(a.a1 === a.a2); // true
 
-// 保持引用关系 cloneForce在对象数量很多时会出现很大的问题，数据量大不适合
+// a下面的两个键值都引用同一个对象b，深拷贝后，a的两个键值应该保留引用关系
+var c = cloneForce(a);
+console.log(c.a1 === c.a2); // true
+
 function cloneForce(x) {
   const uniqueList = []; // 用来去重
   let root = {};
