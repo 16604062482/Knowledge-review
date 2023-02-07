@@ -44,7 +44,6 @@ function cloneLoop(x) {
     if (typeof key !== "undefined") {
       res = parent[key] = {};
     }
-
     for (let k in data) {
       if (data.hasOwnProperty(k)) {
         if (typeof data[k] === "object") {

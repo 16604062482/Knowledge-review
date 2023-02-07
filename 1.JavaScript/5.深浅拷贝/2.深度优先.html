@@ -11,6 +11,7 @@
 <body>
   <script>
 
+
     var a = {
       a1: 1,
       a2: {
@@ -20,35 +21,35 @@
         }
       }
     }
-    // 可以解决爆栈问题
+
     function cloneLoop(x) {
-      let root = {}
-      let stack = [{
-        parent: {},
-        data: x,
-        key: undefined
-      }]
-      while (stack.length) {
-        let node = stack.pop()
-        let res = node.parent;
+      const root = {};
+      const loopList = [
+        {
+          key: undefined,
+          data: x,
+        },
+      ];
+      let res = root;
+      while (loopList.length) {
+        const node = loopList.pop();
+        const { key, data } = node
         if (typeof key !== "undefined") {
-          res = parent[key] = {};
+          res[key] = {}
+          res = res[key]
         }
-        for (const key in node.data) {
-          if (node.hasOwnProperty(key)) {
-            if (typeof key == 'object') {
-              stack.push({
-                parent: res,
-                data: node.data[key],
-                key: key
-              })
-            } else {
-              res[key] = node.data[key]
-            }
+        for (let k in data) {
+          if (typeof data[k] === "object") {
+            loopList.push({
+              key: k,
+              data: data[k],
+            });
+          } else {
+            res[k] = data[k];
           }
         }
       }
-      return root
+      return root;
     }
 
     let b = cloneLoop(a)
