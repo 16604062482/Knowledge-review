@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="setOnePx">
+        0.5 border
+    </div>
+    <style type="text/css">
+        .setOnePx {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            text-align: center;
+        }
+
+        /* 为伪元素设置绝对定位，和父元素左上角对其。 */
+        /* 将伪元素的长和宽先放大2倍，然后再设置一个边框，以左上角为中心，缩放到原来的0.5倍  */
+        .setOnePx::after {
+            content: " ";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 200%;
+            height: 200%;
+            transform: scale(0.5);
+            transform-origin: left top;
+            border: 1px solid #E5E5E5;
+        }
+    </style>
+</body>
+
+</html>

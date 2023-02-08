@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <style>
+        .box1,
+        .box2 {
+            position: relative;
+            /* 1.z-index: auto;
+            z-index为具体的数值是，才会产生层叠上下文。当前的层叠上下文是根元素层叠上下文 */
+            /* z-index: auto; */
+
+            /* 2.z-index: 0;
+            根元素产生层叠上下文，层级由跟元素决定。dom2在前，所以会覆盖前面的。 */
+            z-index:0;
+        }
+
+        .child1 {
+            width: 200px;
+            height: 100px;
+            background: #168bf5;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 2;
+        }
+
+        .child2 {
+            width: 100px;
+            height: 200px;
+            background: #32c292;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 1;
+        }
+    </style>
+    </head>
+
+    <body>
+        <div class="box1">
+            <div class="child1"></div>
+        </div>
+
+        <div class="box2">
+            <div class="child2"></div>
+        </div>
+    </body>
+</body>
+
+</html>
