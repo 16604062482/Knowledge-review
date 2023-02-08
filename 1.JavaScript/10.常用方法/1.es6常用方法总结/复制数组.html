@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <!-- =,直接引用地址 -->
+    <script>
+        const a0 = [1, 2];
+        const arr = a0
+        arr[0] = 2
+        console.log(arr);
+        console.log(a0);
+    </script>
+    <!-- concat，拷贝第一层 -->
+    <script>
+        const a1 = [1, 2,{b:1}];
+        const a2 = a1.concat();
+        a2[0] = 2
+        a2[2].b = 2
+        console.log(a2);
+        console.log(a1);
+    </script>
+    <!-- ...，拷贝第一层 -->
+    <script>
+        const a3 = [1, 2,{b:1}];
+        const a4 = [...a3];
+        a4[0] = 2
+        a4[2].b = 2
+        console.log(a4);
+        console.log(a3);
+    </script>
+</body>
+
+</html>
