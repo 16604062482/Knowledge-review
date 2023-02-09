@@ -40,10 +40,20 @@
   它和 then 的第二个参数一样，用来指定 reject 的回调。效果和写在 then 的第二个参数里面一样。
   另外一个作用：在执行 resolve 的回调（也就是上面 then 中的第一个参数）时，如果抛出异常了，那么并不会报错卡死 js，而是会进到这个 catch 方法中。
 
-- finally()方法：用于指定不管 Promise 对象最后状态如何，都会执行的操作。该方法是 ES2018 引入标准的。
+- finally()方法：用于指定不管 Promise 对象最后状态如何，都会执行的操作。
 
   > finally 方法的回调函数不接受任何参数,没有办法知道前面的 Promise 状态是 fulfilled 还是 rejected。
   > 所以 finally 方法里面的操作，应该是与状态无关的，不依赖于 Promise 的执行结果。
+  ```c
+    promise
+    .then(result => {···})
+    .catch(error => {···})
+    .finally(() => {···});
+  ```
+
+- done：done 并不返回 Promise 对象，所以在 done 之后并不能在使用 catch 。done 的错误是直接抛出去的，并不会进行 Promise 的错误处理。Promise 具有强大的错误处理机制，而 done 则会在函数中跳过错误处理，直接抛出异常。
+
+  > finally 其实并不一定是这个 promise 链的最后一环，相对而言，其实 done 才是。因为 finally 可能之后还有 then 和 catch 等等，所以其必须要返回一个 promise 对象。
 
 - all 方法：谁跑的慢，以谁为准执行回调。
 
