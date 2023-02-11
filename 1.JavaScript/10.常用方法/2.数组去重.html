@@ -1,14 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
+
 <body>
     <script>
-        
+        let arr = [1, 1, 2, 4, 3, 3, 1]
+        // 1：遍历数组，建立新数组，利用indexOf判断是否存在于新数组中，不存在则push到新数组，最后返回新数组
+        function delre(ar) {
+            var ret = [];
+            for (var i = 0, j = ar.length; i < j; i++) {
+                if (ret.indexOf(ar[i]) === -1) {
+                    ret.push(ar[i]);
+                }
+            }
+            return ret;
+        }
+        console.log(delre(arr));
+
+        // 2：双层for循环
+        function delre2(ar) {
+            for (var i = 0; i < ar.length; i++) {
+                for (var j = i + 1; j < ar.length; j++) {
+                    if (ar[j] == ar[i]) {
+                        ar.splice(j, 1)
+                        j--
+                    }
+                }
+            }
+            return ar
+        }
+        console.log(delre2(arr));
+
+        // 3.set
+        console.log([...new Set(arr)]);
+
+        // 4.filter
+        let delre4 = (arr) => {
+            return arr.filter((e, i, arr) => {
+                return arr.indexOf(e) == i;
+            })
+        }
+        console.log(delre4(arr));
     </script>
 </body>
+
 </html>
