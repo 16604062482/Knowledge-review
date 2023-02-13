@@ -73,16 +73,16 @@
 
   > 上面代码中，只要 p1、p2、p3 之中有一个实例率先改变状态，p 的状态就跟着改变。那个率先改变的 Promise 实例的返回值，就传递给 p 的回调函数。
 
-- allSettled 方法：用来确定一组异步操作是否都结束了（不管成功或失败）。包含了”fulfilled“和”rejected“两种情况。
-
-  > 接受一个数组作为参数，数组的每个成员都是一个 Promise 对象，并返回一个新的 Promise 对象。只有等到参数数组的所有 Promise 对象都发生状态变更（不管是 fulfilled 还是 rejected），返回的 Promise 对象才会发生状态变更。
-
 - any 方法：接受一组 Promise 实例作为参数.
 
   > 只要参数实例有一个变成 fulfilled 状态，包装实例就会变成 fulfilled 状态
   > 如果所有参数实例都变成 rejected 状态，包装实例就会变成 rejected 状态。
 
   - Promise.any()跟 Promise.race()方法很像，只有一点不同，就是 Promise.any()不会因为某个 Promise 变成 rejected 状态而结束，必须等到所有参数 Promise 变成 rejected 状态才会结束。
+
+- allSettled 方法：用来确定一组异步操作是否都结束了（不管成功或失败）。包含了”fulfilled“和”rejected“两种情况。
+
+  > 接受一个数组作为参数，数组的每个成员都是一个 Promise 对象，并返回一个新的 Promise 对象。只有等到参数数组的所有 Promise 对象都发生状态变更（不管是 fulfilled 还是 rejected），返回的 Promise 对象才会发生状态变更。
 
 - Promise.resolve()：将现有对象转为 Promise 对象。
 
