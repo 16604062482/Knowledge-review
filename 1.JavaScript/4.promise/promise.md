@@ -17,7 +17,7 @@
   > 第二个回调函数是 Promise 对象的状态变为 rejected 时调用。
   > 这两个函数都是可选的，不一定要提供。它们都接受 Promise 对象传出的值作为参数。
 
-  ```c
+  ```js
       // bad
       promise
       .then(function(data) {
@@ -44,7 +44,7 @@
 
   > finally 方法的回调函数不接受任何参数,没有办法知道前面的 Promise 状态是 fulfilled 还是 rejected。
   > 所以 finally 方法里面的操作，应该是与状态无关的，不依赖于 Promise 的执行结果。
-  ```c
+  ```js
     promise
     .then(result => {···})
     .catch(error => {···})
@@ -57,7 +57,7 @@
 
 - all 方法：谁跑的慢，以谁为准执行回调。
 
-  ```c
+  ```js
     const p = Promise.all([p1, p2, p3]);
   ```
 
@@ -67,7 +67,7 @@
 
 - race 方法：谁跑的快，以谁为准执行回调。
 
-  ```c
+  ```js
     const p = Promise.race([p1, p2, p3]);
   ```
 
@@ -98,6 +98,6 @@
 
 - Promise.try()：不管函数 f 是同步函数还是异步操作，但是想用 Promise 来处理它。
   > 因为这样就可以不管 f 是否包含异步操作，都用 then 方法指定下一步流程，用 catch 方法处理 f 抛出的错误。一般就会采用下面的写法。
-  ```c
+  ```js
       Promise.resolve().then(f)//如果f是同步函数，那么它会在本轮事件循环的末尾执行。
   ```
