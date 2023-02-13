@@ -9,70 +9,72 @@
 </head>
 
 <body>
-    <!-- 原型链继承 -->
+    <!-- 原型链继承 引用值共享的问题-->
     <script>
-        class Child {
+        function Child() {
 
         }
-        class Parent {
-
+        function Parent() {
+            const arr = [1, 2, 3]
         }
         Child.prototype = new Parent()
+        let arr1 = new Child()
+        arr1.push(4) //[1,2,3,4]
+        let arr2 = new Child() //[1,2,3,4]
     </script>
-    <!-- 构造函数继承 -->
+    <!-- 盗用构造函数继承 必须在构造函数中定义方法，函数不能复用-->
     <script>
-        class Child {
-            constructor() {
-                Parent.call(this)
-            }
+        function Child() {
+            Parent.call(this)
         }
         class Parent {
 
         }
     </script>
-    <!-- 组合继承 -->
+    <!-- 组合继承 创建两个父类的实例-->
     <script>
-        class Child {
-            constructor() {
-                Parent.call(this)
-            }
+        function Child() {
+            Parent.call(this)
         }
-        class Parent {
+        function Parent() {
 
         }
         Child.prototype = new Parent()
         Child.prototype.constructor = Child
     </script>
-    <!-- 原型式继承 -->
+    <!-- 原型式继承 引用值共享的问题-->
     <script>
+        function object(o) { //对传入的对象进行浅拷贝
+            function F() { }
+            F.prototype = o
+            return new F()
+        }
         let obj = {}
-        let obj1 = Object.create(obj)
+        let obj1 = object(obj)
     </script>
-    <!-- 寄生式继承 -->
+    <!-- 寄生式继承 函数不能重用-->
     <script>
+        function createAnother(original) {
+            let clone = object(original)
+            return clone
+        }
         let obj2 = {}
-        let obj3 = create(obj)
-        function create(obj) {
-            return Object.create(obj)
-        }
+        let obj3 = createAnother(obj2)
     </script>
-    <!-- 寄生组合继承 -->
+    <!-- 寄生组合继承-->
     <script>
-        class Child {
-            constructor() {
-                Parent.call(this)
-            }
+        function inheritPrototype(child, parent) {
+            let prototype = object(parent.prototype) //创建对象
+            prototype.constructor = child //增强对象
+            child.prototype = prototype //赋值对象
         }
-        class Parent {
+        function Child() {
+            Parent.call(this)
+        }
+        function Parent() {
 
         }
-        function create(obj) {
-            function fn() { }
-            fn.prototype = obj
-            return new fn()
-        }
-        Child.prototype = create(Parent.prototype)
-        Child.prototype.constructor = Child
+        inheritPrototype(child, parent)
     </script>
 </body>
 

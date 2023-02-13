@@ -45,6 +45,28 @@
         let fn2 = bar.myBind(foo, ['kevin', 18]);
         fn2()
     </script>
+    <script>
+        /**
+         * 偏函数:bind() 的另一个最简单的用法是使一个函数拥有预设的初始参数。
+         * 只要将这些参数（如果有的话）作为 bind() 的参数写在 this 后面。
+         * 当绑定函数被调用时，这些参数会被插入到目标函数的参数列表的开始位置，
+         * 传递给绑定函数的参数会跟在它们后面。
+         * 
+        */
+        function list() {
+            return Array.prototype.slice.call(arguments);
+        }
+
+        var list1 = list(1, 2, 3); // [1, 2, 3]
+
+        // 创建一个函数，它拥有预设参数列表。
+        var leadingThirtysevenList = list.bind(null, 37);
+
+        var list2 = leadingThirtysevenList();// [37]
+
+        var list3 = leadingThirtysevenList(1, 2, 3);// [37, 1, 2, 3]
+
+    </script>
 </body>
 
 </html>
