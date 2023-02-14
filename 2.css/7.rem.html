@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<!-- 1rem等于html根元素设定的font-size的px值 -->
+<!-- 如果css里面没有设定html的font-size，则默认浏览器以1rem=16px来换算。 -->
+
+<body>
+    <script>
+        // 可以让font-size一直恒等于1/100，一般需要在页面dom ready、resize和屏幕旋转中设置。
+        document.documentElement.style.fontSize = document.documentElement.clientWidth / 100 + 'px';
+
+    </script>
+    <style>
+        html {
+            /* 1rem = 14px */
+            font-size: 14px
+        }
+
+        /* 如果让html元素字体大小,恒等于1/100,那1rem和1x就等价了 */
+        html {
+            font-size: width / 100
+        }
+
+        /* 子元素1rem就是屏幕宽度的1% */
+        p {
+            /* 50rem = 50x = 屏幕宽度的50%  rem就相当于上面的x单位 1rem就是1%  */
+            width: 50rem
+        }
+    </style>
+    <style>
+        /* vw —— 视口宽度的 1/100；vh —— 视口高度的 1/100.有了vw可以不用计算font-size值 */
+    </style>
+</body>
+
+</html>
