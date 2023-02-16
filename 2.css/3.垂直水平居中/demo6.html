@@ -9,23 +9,20 @@
 </head>
 
 <body>
-    <div class="wp">
-        <div class="box size">123123</div>
+    <div class="father">
+        <div class="son">111</div>
     </div>
     <style>
-        /* 公共代码 */
-        .wp {
-            border: 1px solid red;
-            width: 300px;
-            height: 300px;
+        .father {
+            width: 400px;
+            height: 400px;
+            background-color: red;
             display: grid;
+            place-items: center;
         }
 
-        .box {
-            background: green;
-            font-size: 16px;
-            align-self: center;
-            justify-self: center;
+        .son {
+            background-color: gray;
         }
     </style>
 </body>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="outer">
+        <div class="left">left</div>
+        <div class="center">center</div>
+        <div class="right">right</div>
+    </div>
+    <!-- flex布局，左右宽度固定，中间flex：1 -->
+    <style>
+        .outer {
+            display: flex;
+        }
+
+        .left {
+            width: 100px;
+            height: 100px;
+            background: tomato;
+        }
+
+        .right {
+            width: 200px;
+            height: 100px;
+            background: gold;
+        }
+
+        .center {
+            flex: 1;
+            background: lightgreen;
+        }
+    </style>
+</body>
+
+</html>
