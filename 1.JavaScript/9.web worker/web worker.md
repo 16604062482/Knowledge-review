@@ -1,7 +1,6 @@
 - web worker:
   > 允许一段 JavaScript 程序运行在主线程之外的另外一个线程中。
-  > Web Worker 规范中定义了两类工作线程，分别是【专用线程】Dedicated Worker
-  > 和【共享线程】Shared Worker。
+  > Web Worker 规范中定义了两类工作线程，分别是【专用线程】Dedicated Worker 和【共享线程】Shared Worker。
   > 其中，Dedicated Worker 只能为一个页面所使用，而 Shared Worker 则可以被多个页面所共享。
 
 > Worker 线程一旦新建成功，就会始终运行，不会被主线程上的活动（比如用户点击按钮、提交表单）打断。这样有利于随时响应主线程的通信。但是，这也造成了 Worker 比较耗费资源，不应该过度使用，而且一旦使用完毕，就应该关闭。
@@ -57,6 +56,7 @@ worker.terminate();
 - Worker 线程
 
 - Worker 线程内部需要有一个监听函数，监听 message 事件。
+  > self代表子线程自身，即子线程的全局对象。因此，等同于下面两种写法。
 
 ```js
 //除了使用【self.addEventListener()】指定监听函数，也可以使用【self.onmessage】指定

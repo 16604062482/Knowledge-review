@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        let a = {
+            aaa:1,
+            b:{
+                bbb:1
+            },
+            f:function(){
+                console.log(1);
+            },
+            c:[1,2,3]
+        }
+        let map = new Map()
+        function deepCopy(obj){
+            if(obj instanceof Object){
+                if(map.has(obj)){
+                    return map.get(obj)
+                }
+                let newObj
+                if(obj instanceof Array){
+                    newObj = []
+                }else if(obj instanceof Function){
+                    newObj = function(){
+                        return obj.apply(this,[...arguments])
+                    }
+                }else{
+                    newObj = {}
+                }
+                let desc = Object.getOwnPropertyDescriptors(obj)
+                let copy = Object.create(obj,desc)
+                map.set(obj,copy)
+                for (let item in obj) {
+                    if(obj.hasOwnProperty(item)){
+                        newObj[item] = deepCopy(obj[item])
+                    }
+                }
+                return newObj
+            }else{
+                return obj
+            }
+        }
+        let b = deepCopy(a)
+        b.c[1] = 'hhh'
+        console.log(a);
+        console.log(b);
+    </script>
+</body>
+</html>

@@ -65,7 +65,8 @@
             .catch((err) => {
                 console.log('catch: ', err)
             })
-            // catch: error!!!
+            // then: Error: error!!!
+
 // 解释：.then 或者 .catch 中 return 一个 error 对象并不会抛出错误，所以不会被后续的 .catch 捕获
 // 需要改成其中一种：
 // return Promise.reject(new Error('error!!!'))
