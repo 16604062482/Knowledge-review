@@ -147,18 +147,18 @@ myPromise.race = function (promises) {
 myPromise.all = function (promises) {
   let arr = [];
   let i = 0;
-  function processData(index, data) {
-    arr[index] = data;
-    i++;
-    if (i == promises.length) {
-      resolve(arr);
-    }
-  }
   return new myPromise((resolve, reject) => {
+    function processData(index, data) {
+      arr[index] = data;
+      i++;
+      if (i == promises.length) {
+        resolve(arr);
+      }
+    }
     for (let i = 0; i < promises.length; i++) {
       promises[i].then((data) => {
         processData(i, data);
-      }, reject);
+      });
     }
   });
 };

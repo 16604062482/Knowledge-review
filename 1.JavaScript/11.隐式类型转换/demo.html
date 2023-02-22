@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <!-- 
+        第一题：数字与字符串比较，使用 Number('1a') 转换字符串返回 NaN，与1 不相等。
+        第二题：字面量 .1 是数字 0.1，使用 Number('.1') 返回也是 0.1，相等。
+        第三题：先将 false 转化为 0，然后使用 [] 的 toString 方法，等同于 [].join() 返回 ''，然后使用 Number('') 返回 0，相等。
+        第四题：{} 的 toString 方法返回 '[object Object]'，与 '' 不相等。
+        第五题：{} 的 toString 方法返回 '[object Object]'，相等。
+        第六题：obj 的 toString 方法返回 1，相等。
+        第七题：优先调用 obj 的 valueOf 方法返回 0，不相等。
+        第八题：其中有一操作数是 undefined，另一操作数不是 null 或 undefined，直接返回 false。
+        第九题：通过 Object.create 以 obj1 为原型创建 obj2，比较时优先调用 obj2 的 valueOf 方法返回 0，即使是在原型链上，不相等。
+        第十题：obj 的 valueOf 方法与 toString 方法返回的都不是基础数据类型，报错 TypeError: Cannot convert object to primitive value。
+ -->
+    <script>
+        // 第一题
+        console.log(1 == '1a') //false
+        // 第二题
+        console.log(.1 == '.1') //true
+        // 第三题
+        console.log([] == false) //true
+        // 第四题
+        console.log({} == '') //false
+        // 第五题
+        console.log({} == '[object Object]') //true
+        // 第六题
+        const obj1 = {
+            toString() {
+                return 1
+            },
+        }
+        console.log(obj1 == 1) //true
+        // 第七题
+        const obj2 = {
+            valueOf() {
+                return 0
+            },
+            toString() {
+                return '1'
+            },
+        }
+        console.log(obj2 == '1') //false
+        // 第八题
+        const obj3 = {
+            valueOf() { },
+        }
+        console.log(obj3 == undefined) //false
+        // 第九题
+        const obj4 = {
+            valueOf() {
+                return 0
+            },
+        }
+        const obj5 = Object.create(obj4)
+        obj5.toString = () => '1'
+        console.log(obj5 == 1) //false
+        // 第十题
+        const obj = {
+            toString() {
+                return {
+                    valueOf() {
+                        return 1
+                    },
+                    toString() {
+                        return 0
+                    },
+                }
+            },
+        }
+        console.log(obj == 0) // Err
+    </script>
+</body>
+
+</html>
